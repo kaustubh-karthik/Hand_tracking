@@ -33,9 +33,7 @@ while True:
 
                 print(id, ':', centre_x, centre_y)
 
-                if id == 0:
-                    cv2.circle(img, (centre_x, centre_y), 25, (255, 0, 255))
-
+                cv2.circle(img, (centre_x, centre_y), 25, (255, 0, 255))
 
             mp_draw.draw_landmarks(img, hand_lm, mp_hands.HAND_CONNECTIONS)
 
@@ -46,7 +44,7 @@ while True:
     cv2.putText(
         img,
         text = str(int(fps)),
-        org =(10, 70),
+        org = (10, 70),
         fontFace = cv2.FONT_HERSHEY_COMPLEX,
         fontScale = 3,
         color = (150, 150, 150),
