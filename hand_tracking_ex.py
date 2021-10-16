@@ -1,5 +1,5 @@
 import cv2
-from hand_tracking_utils import hand_detector as hands, display_img
+from hand_tracking_utils import hand_detector as hands
 import mediapipe as mp
 import numpy as np
 
@@ -17,4 +17,4 @@ while True:
     if lm_list:
         print(lm_list[4])
 
-    display_img(img)
+    detector.display_img(img)

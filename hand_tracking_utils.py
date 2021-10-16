@@ -53,7 +53,7 @@ class hand_detector():
         if fps:
             curr_time = time.time()
             fps = 1/(curr_time - self.prev_time)
-            prev_time = curr_time
+            self.prev_time = curr_time
 
 
         cv2.putText(
