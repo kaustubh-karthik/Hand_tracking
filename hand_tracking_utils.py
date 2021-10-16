@@ -9,6 +9,8 @@ class hand_detector():
         self.hands = self.mp_hands.Hands(mode, max_hands, detection_conf, track_conf)
         self.mp_draw = mp.solutions.drawing_utils
 
+        self.prev_time = 0
+
 
     def find_hands(self, img, draw = True):
         
@@ -46,38 +48,31 @@ class hand_detector():
 
         return lm_list
 
-prev_time = 0
+    def display_img(self, img, fps = True):
 
-def display_img(img, fps = True):
-
-    global prev_time
-
-    if fps:
-        curr_time = time.time()
-        fps = 1/(curr_time - prev_time)
-        prev_time = curr_time
+        if fps:
+            curr_time = time.time()
+            fps = 1/(curr_time - self.prev_time)
+            prev_time = curr_time
 
 
-    cv2.putText(
-        img,
-        text = str(int(fps)),
-        org = (10, 70),
-        fontFace = cv2.FONT_HERSHEY_COMPLEX,
-        fontScale = 3,
-        color = (150, 150, 150),
-        thickness = 3)
+        cv2.putText(
+            img,
+            text = str(int(fps)),
+            org = (10, 70),
+            fontFace = cv2.FONT_HERSHEY_COMPLEX,
+            fontScale = 3,
+            color = (150, 150, 150),
+            thickness = 3)
 
-    cv2.imshow("Image", img)
-    cv2.waitKey(1)
+        cv2.imshow("Image", img)
+        cv2.waitKey(1)
 
 
 def main():
 
     detector = hand_detector()
-
-    curr_time = 0
-    prev_time = 0
-
+    
     cap = cv2.VideoCapture(1) # Check for error
 
     while True:
@@ -90,7 +85,7 @@ def main():
         if lm_list:
             print(lm_list[4])
 
-        display_img(img)
+        detector.display_img(img)
 
 if __name__ == '__main__':
     main()
