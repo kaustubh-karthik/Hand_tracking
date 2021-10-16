@@ -2,16 +2,12 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import time
-
 class hand_detector():
     def __init__(self, mode = False, max_hands = 2, detection_conf = 0.5, track_conf = 0.5):
-        # Do i need self.variables? -- Check for static
+        # Do i need variables? -- Check for static
         self.mp_hands = mp.solutions.hands
         self.hands = self.mp_hands.Hands(mode, max_hands, detection_conf, track_conf)
         self.mp_draw = mp.solutions.drawing_utils
-
-        self.prev_time = 0
-        self.curr_time = 0
 
 
     def find_hands(self, img, draw = True):
@@ -29,7 +25,7 @@ class hand_detector():
                     self.mp_draw.draw_landmarks(img, hand_lm, self.mp_hands.HAND_CONNECTIONS)
 
         return img
-    
+
     def find_lms(self, img, hand_num = 0, draw = True):
         
         lm_list = []
@@ -46,29 +42,33 @@ class hand_detector():
                 lm_list.append([id, centre_x, centre_y])
 
                 if draw:
-                    cv2.circle(img, (centre_x, centre_y), 15, (255, 0, 255))
+                    cv2.circle(img, (centre_x, centre_y), 10, (255, 0, 0))
 
         return lm_list
 
-    def display_img(self, img, fps = True):
+prev_time = 0
 
-        self.curr_time = time.time()
-        fps = 1/(self.curr_time - self.prev_time)
-        self.prev_time = self.curr_time
+def display_img(img, fps = True):
+
+    global prev_time
+
+    if fps:
+        curr_time = time.time()
+        fps = 1/(curr_time - prev_time)
+        prev_time = curr_time
 
 
-        cv2.putText(
-            img,
-            text = str(int(fps)),
-            org = (10, 70),
-            fontFace = cv2.FONT_HERSHEY_COMPLEX,
-            fontScale = 3,
-            color = (150, 150, 150),
-            thickness = 3)
+    cv2.putText(
+        img,
+        text = str(int(fps)),
+        org = (10, 70),
+        fontFace = cv2.FONT_HERSHEY_COMPLEX,
+        fontScale = 3,
+        color = (150, 150, 150),
+        thickness = 3)
 
-        cv2.imshow("Image", img)
-        cv2.waitKey(1)
-
+    cv2.imshow("Image", img)
+    cv2.waitKey(1)
 
 
 def main():
@@ -90,7 +90,7 @@ def main():
         if lm_list:
             print(lm_list[4])
 
-        detector.display_img(img)
+        display_img(img)
 
 if __name__ == '__main__':
     main()

@@ -10,7 +10,6 @@ hands = mp_hands.Hands()
 mp_draw = mp.solutions.drawing_utils
 
 prev_time = 0
-curr_time = 0
 
 while True:
     success, img = cap.read()
